@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  jira:
+    image: atlassian/jira-software:9.15.0
+    container_name: jira
+    ports:
+      - "9080:8080"  # HostPort:ContainerPort
+    environment:
+      - ATL_DB_TYPE=postgresql
+      - ATL_JDBC_URL=jdbc:postgresql://host.docker.internal:5432/jiradb
+      - ATL_JDBC_USER=jira
+      - ATL_JDBC_PASSWORD=jira
+    volumes:
+      - jira_data:/var/atlassian/application-data/jira
+
+  confluence:
+    image: atlassian/confluence-server:8.5.4
+    container_name: confluence
+    ports:
+      - "9090:8090"
+    environment:
+      - ATL_DB_TYPE=postgresql
+      - ATL_JDBC_URL=jdbc:postgresql://host.docker.internal:5432/confluencedb
+      - ATL_JDBC_USER=confluence
+      - ATL_JDBC_PASSWORD=confluence
+    volumes:
+      - confluence_data:/var/atlassian/application-data/confluence
+
+volumes:
+  jira_data:
+  confluence_data:
