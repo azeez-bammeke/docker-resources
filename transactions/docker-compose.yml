@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  axon-server:
+    image: axoniq/axonserver:latest   # Use 'latest' or a confirmed tag like '4.9'
+    container_name: axon-server
+    environment:
+      AXONIQ_AXONSERVER_NAME: "LocalAxon"
+      AXONIQ_AXONSERVER_HTTP_PORT: 8024
+      AXONIQ_AXONSERVER_TCP_PORT: 8124
+      AXONIQ_AXONSERVER_JDBC_URL: "jdbc:postgresql://postgres:5432/axon_db"
+      AXONIQ_AXONSERVER_JDBC_USERNAME: "postgres"
+      AXONIQ_AXONSERVER_JDBC_PASSWORD: "pdata@1234"
+      AXONIQ_AXONSERVER_CONTEXT_ROOT: "/"
+      AXONIQ_AXONSERVER_ENABLE_UI: "true"
+    ports:
+      - "8024:8024"   # HTTP REST API and UI
+      - "8124:8124"   # TCP communication for Axon client apps
+    networks:
+      - shared-network
+
+networks:
+  shared-network:
+    external: true
